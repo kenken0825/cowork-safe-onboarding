@@ -339,9 +339,13 @@
     <a class="snav" href="#sl1" onclick="openSec('sl1')"><span class="n">1</span> 基本方針</a>
     <a class="snav" href="#sl2" onclick="openSec('sl2')"><span class="n">2</span> プロジェクト</a>
     <a class="snav" href="#sl3" onclick="openSec('sl3')"><span class="n">3</span> 準備資料</a>
-    <a class="snav" href="#sl4" onclick="openSec('sl4')"><span class="n">4</span> Memory</a>
-    <a class="snav" href="#sl5" onclick="openSec('sl5')"><span class="n">5</span> 依頼テンプレ</a>
-    <a class="snav" href="#sl6" onclick="openSec('sl6')"><span class="n">✓</span> 30分設定</a>
+    <a class="snav" href="#slf" onclick="openSec('slf')"><span class="n">4</span> 作業フォルダ</a>
+    <a class="snav" href="#sl4" onclick="openSec('sl4')"><span class="n">5</span> Memory</a>
+    <a class="snav" href="#sl5" onclick="openSec('sl5')"><span class="n">6</span> 依頼テンプレ</a>
+    <a class="snav" href="#slc" onclick="openSec('slc')"><span class="n">7</span> コネクタ</a>
+    <a class="snav" href="#sls" onclick="openSec('sls')"><span class="n">8</span> 定期タスク</a>
+    <a class="snav" href="#slr" onclick="openSec('slr')"><span class="n">9</span> 30日ロードマップ</a>
+    <a class="snav" href="#sl6" onclick="openSec('sl6')"><span class="n">✓</span> 仕上げ</a>
   </span>
 </nav>
 
@@ -882,13 +886,45 @@ AIに任せてはいけない仕事は、顧客への自動送信、支払、返
     </div>
   </div>
 
-  <!-- SALES STEP 4: Memory -->
-  <div class="sec" id="sl4">
+  <!-- SALES STEP 4: 作業フォルダ -->
+  <div class="sec" id="slf">
     <div class="sec-head" onclick="tog(this)">
       <div class="sec-head-l">
         <div class="step-circle sc-teal">4</div>
         <div class="sec-titles">
-          <div class="sec-lbl">営業 STEP 4 ｜ 記憶</div>
+          <div class="sec-lbl">営業 STEP 4 ｜ 作業場所を分ける</div>
+          <div class="sec-title">営業専用フォルダを小さく用意する</div>
+        </div>
+      </div>
+      <div class="sec-right"><span class="chev">▼</span></div>
+    </div>
+    <div class="sec-body">
+      <p class="lead">Cowork は選んだファイルを<strong>読み・書き・場合によっては永久削除</strong>できます。営業は顧客情報や価格を扱うからこそ、最初から PC 全体や共有ドライブを渡さず、<strong>営業アシスタント専用のフォルダ</strong>を1つ作り、その中だけで作業させます。</p>
+      <div class="code-block">Sales_Assistant_Workspace/
+├── 00_products/         商品・サービス資料、最新の価格表
+├── 10_templates/        提案書・メール・週報のテンプレート
+├── 20_accounts/         案件ごとの商談メモ（公開可・匿名化したもの）
+├── 30_drafts/           AIの下書き（提案・メール・週報）※送信前
+├── 40_sent/             自分が確認・送信済みの控え
+└── 90_archive/          終了案件・古い資料の保管</div>
+      <div class="cl cl-err">
+        <div class="cl-title">🚫 顧客名簿・個人情報の原本を入れない</div>
+        <p>顧客リスト全体、名刺データ、個人の連絡先一覧、未公開の契約書は<strong>このフォルダに入れない</strong>でください。商談準備に必要な情報は、案件ごとに<strong>必要な分だけ・匿名化して</strong>「20_accounts」に置きます。元データは CRM や共有ドライブの正本を都度参照させます。</p>
+      </div>
+      <div class="cl cl-warn">
+        <div class="cl-title">⚠️ 価格表は「最新版だけ」を1つ置く</div>
+        <p>古い価格表が残っていると、AI が古い金額で提案を作ってしまいます。「00_products」には<strong>最新版を1つだけ</strong>置き、改定したら必ず差し替えてください。最終金額は提案前に必ず自分で確認します。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SALES STEP 5: Memory -->
+  <div class="sec" id="sl4">
+    <div class="sec-head" onclick="tog(this)">
+      <div class="sec-head-l">
+        <div class="step-circle sc-teal">5</div>
+        <div class="sec-titles">
+          <div class="sec-lbl">営業 STEP 5 ｜ 記憶</div>
           <div class="sec-title">Memory に文体・報告形式を覚えさせる</div>
         </div>
       </div>
@@ -907,17 +943,25 @@ AIに任せてはいけない仕事は、顧客への自動送信、支払、返
         <div class="cl-title">⚠️ Memory に頼らないもの</div>
         <p>価格・契約条件・個人情報・値引き・最新の案件状況は<strong>記憶ではなく元データ（資料・CRM）を見て</strong>判断させてください。Memory を営業台帳の代わりにしないこと。</p>
       </div>
+      <p class="lead">月に1回、覚えている内容を棚卸しすると、古い思い込みで提案がズレるのを防げます。</p>
+      <div class="paste">
+        <div class="paste-head">
+          <span class="paste-lbl">📋 月次の Memory 点検プロンプト</span>
+          <button class="cp-btn" onclick="cpPre(this)">コピー</button>
+        </div>
+        <div class="paste-text">このプロジェクトであなたが私の営業について覚えている前提（文体の好み・報告形式・顧客や商品の情報）を一覧にしてください。正式な資料・CRMにもとづくものと、会話から推測しているだけのものを分けて書いてください。古くなっている可能性があるものには「要確認」と付けてください。</div>
+      </div>
     </div>
   </div>
 
-  <!-- SALES STEP 5: 依頼テンプレ -->
+  <!-- SALES STEP 6: 依頼テンプレ -->
   <div class="sec" id="sl5">
     <div class="sec-head" onclick="tog(this)">
       <div class="sec-head-l">
-        <div class="step-circle sc-teal">5</div>
+        <div class="step-circle sc-teal">6</div>
         <div class="sec-titles">
-          <div class="sec-lbl">営業 STEP 5 ｜ 実戦</div>
-          <div class="sec-title">そのまま使える依頼文テンプレート（5種）</div>
+          <div class="sec-lbl">営業 STEP 6 ｜ 実戦</div>
+          <div class="sec-title">そのまま使える依頼文テンプレート（7種）</div>
         </div>
       </div>
       <div class="sec-right"><span class="chev">▼</span></div>
@@ -974,10 +1018,128 @@ AIに任せてはいけない仕事は、顧客への自動送信、支払、返
 
 今週の活動メモ：（貼り付け）</div>
       </div>
+      <div class="paste">
+        <div class="paste-head">
+          <span class="paste-lbl">📋 ⑥ 想定反論への備え</span>
+          <button class="cp-btn" onclick="cpPre(this)">コピー</button>
+        </div>
+        <div class="paste-text">この案件で顧客から出そうな反論・懸念を5つ想定し、それぞれに対する誠実な返し方を整理してください。価格・納期・契約条件にかかわる返答は断定せず「社内確認が必要」と明記してください。煽らず、相手の不安に寄り添うトーンでお願いします。
+
+案件・商品：（　）／相手の立場・状況：（　）／気にしていそうな点：（　）</div>
+      </div>
+      <div class="paste">
+        <div class="paste-head">
+          <span class="paste-lbl">📋 ⑦ 失注・停滞案件のふりかえり</span>
+          <button class="cp-btn" onclick="cpPre(this)">コピー</button>
+        </div>
+        <div class="paste-text">うまく進まなかった、または失注した案件をふりかえりたいです。商談メモをもとに、①何が決め手になって進まなかったか（仮説） ②こちらの動きで改善できた点 ③次に似た案件で試すこと、を整理してください。
+相手や自分を一方的に責める書き方は避け、次に活かせる学びとしてまとめてください。事実とこちらの推測は分けて書いてください。
+
+案件メモ：（貼り付け）</div>
+      </div>
     </div>
   </div>
 
-  <!-- SALES STEP 6: 仕上げ -->
+  <!-- SALES STEP 7: コネクタ -->
+  <div class="sec" id="slc">
+    <div class="sec-head" onclick="tog(this)">
+      <div class="sec-head-l">
+        <div class="step-circle sc-teal">7</div>
+        <div class="sec-titles">
+          <div class="sec-lbl">営業 STEP 7 ｜ つなぐ</div>
+          <div class="sec-title">コネクタ（メール・カレンダー・CRM）は下書きまで</div>
+        </div>
+      </div>
+      <div class="sec-right"><span class="chev">▼</span></div>
+    </div>
+    <div class="sec-body">
+      <p class="lead">コネクタは、Gmail・カレンダー・CRM などの外部サービスとつなぐ仕組みです。営業はメールやカレンダーと相性が良い反面、<strong>つないだ瞬間に「送信」「予定変更」までできてしまう</strong>ため、最初は「読む・下書きする」までに役割を絞ります。1つずつ、効果を確かめながら増やします。</p>
+      <table class="cmp-table">
+        <thead><tr><th style="width:8%">段階</th><th>つなぐもの</th><th>営業での使い方</th><th style="width:30%">注意点</th></tr></thead>
+        <tbody>
+          <tr><td><strong>1</strong></td><td>カレンダー（閲覧）</td><td>商談予定の確認、準備すべき案件の洗い出し</td><td>予定の追加・変更はまだ任せない</td></tr>
+          <tr><td><strong>2</strong></td><td>メール（下書きのみ）</td><td>初回メール・お礼・フォローの<strong>下書き</strong>作成</td><td class="ng">自動送信は禁止。送信は必ず自分が押す</td></tr>
+          <tr><td><strong>3</strong></td><td>ファイル・ドライブ（営業フォルダ）</td><td>提案書・週報の作成、資料の参照</td><td>営業専用フォルダに限定。共有ドライブ全体は渡さない</td></tr>
+          <tr><td><strong>4</strong></td><td>CRM・営業ツール（閲覧）</td><td>案件状況の確認、入力内容の下書き整理</td><td class="ng">顧客への送信・ステータス自動更新はしない</td></tr>
+        </tbody>
+      </table>
+      <div class="cl cl-teal">
+        <div class="cl-title">💡 「つなげるから」ではなく「必要になったら」</div>
+        <p>まずカレンダー閲覧とメール下書きだけで十分な効果が出ます。CRM 連携は、下書き運用に慣れてから。<strong>つないだ各サービスで「送信・変更・削除を任せていないか」を都度確認</strong>してください。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SALES STEP 8: 定期タスク -->
+  <div class="sec" id="sls">
+    <div class="sec-head" onclick="tog(this)">
+      <div class="sec-head-l">
+        <div class="step-circle sc-teal">8</div>
+        <div class="sec-titles">
+          <div class="sec-lbl">営業 STEP 8 ｜ 自動化</div>
+          <div class="sec-title">定期タスクで「準備・まとめ」を自動化する</div>
+        </div>
+      </div>
+      <div class="sec-right"><span class="chev">▼</span></div>
+    </div>
+    <div class="sec-body">
+      <p class="lead">定期タスク（スケジュール）を使うと、週報や商談準備のたたき台を決まった時間に自動で作れます。営業の「毎週・毎朝の手間」を減らせますが、<strong>顧客に直接届く処理は自動化しない</strong>のが鉄則です。</p>
+      <div class="pc">
+        <div class="pc-box good">
+          <div class="pc-label">✅ 営業で向く定期タスク</div>
+          <div class="pc-text"><ul><li>毎週金曜の営業週報のたたき台</li><li>翌日の商談リスト＋準備メモ（下書き）</li><li>フォロー漏れ・連絡が止まっている案件の洗い出し</li><li>担当業界のニュース要約</li></ul></div>
+        </div>
+        <div class="pc-box bad">
+          <div class="pc-label">🚫 自動化しない</div>
+          <div class="pc-text"><ul><li>顧客へのメール自動送信</li><li>見積・請求・契約書の自動送付</li><li>カレンダー予定の自動登録・変更</li><li>CRM ステータスの自動更新</li></ul></div>
+        </div>
+      </div>
+      <div class="paste">
+        <div class="paste-head">
+          <span class="paste-lbl">📋 そのまま使える｜毎朝の商談準備（定期タスク）</span>
+          <button class="cp-btn" onclick="cpPre(this)">コピー</button>
+        </div>
+        <div class="paste-text">毎朝、今日と明日の商談予定を確認し、案件ごとに「相手の状況・想定課題・聞くべき質問・次の一手」を1件1ページで整理してください。営業フォルダ内の資料の範囲でまとめ、価格や契約条件は断定しないでください。
+メール送信、カレンダー変更、CRM更新は行わないでください。準備メモの作成だけお願いします。</div>
+      </div>
+      <div class="cl cl-info">
+        <div class="cl-title">ℹ️ 実行はアプリが開いているときだけ</div>
+        <p>定期タスクは Claude Desktop が開いていて PC が起きているときに動きます。出てきた下書きは<strong>そのまま送らず、必ず自分で確認</strong>してから使ってください。不要になったタスクは停止・削除します。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SALES STEP 9: 30日ロードマップ -->
+  <div class="sec" id="slr">
+    <div class="sec-head" onclick="tog(this)">
+      <div class="sec-head-l">
+        <div class="step-circle sc-navy">9</div>
+        <div class="sec-titles">
+          <div class="sec-lbl">営業 ｜ 初月の進め方</div>
+          <div class="sec-title">30日で「自分の型」を作る</div>
+        </div>
+      </div>
+      <div class="sec-right"><span class="chev">▼</span></div>
+    </div>
+    <div class="sec-body">
+      <p class="lead">最初から全部を任せようとせず、<strong>30日で「商談準備」か「週報」のどちらか1つを安定して任せられる</strong>状態を目指します。</p>
+      <table class="cmp-table">
+        <thead><tr><th style="width:14%">期間</th><th>やること</th><th>できた状態</th></tr></thead>
+        <tbody>
+          <tr><td><strong>1週目</strong></td><td>グローバル指示・営業プロジェクト・プロジェクト指示を設定する</td><td>毎回の指示なしで営業向けの答えが返る</td></tr>
+          <tr><td><strong>2週目</strong></td><td>商品資料・価格表・テンプレを専用フォルダに入れ、商談準備を依頼する</td><td>準備メモが自分の使える形で出る</td></tr>
+          <tr><td><strong>3週目</strong></td><td>メール下書き・提案下書きを試し、Memory に文体を覚えさせる</td><td>文体・構成が毎回そろう</td></tr>
+          <tr><td><strong>4週目</strong></td><td>週報か商談準備を定期タスク化し、カレンダー閲覧をつなぐ</td><td>毎週の手間が1つ減る</td></tr>
+        </tbody>
+      </table>
+      <div class="cl cl-tip">
+        <div class="cl-title">✅ 1か月目のゴール</div>
+        <p>「AI が営業を全部やる」ではありません。<strong>準備・下書き・整理は任せ、判断と送信は自分がする</strong>──この線引きが体に馴染んだ状態がゴールです。ここまで来れば、提案・フォロー・CRM へ安全に広げられます。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SALES STEP 10: 仕上げ -->
   <div class="sec" id="sl6">
     <div class="sec-head" onclick="tog(this)">
       <div class="sec-head-l">
@@ -995,7 +1157,8 @@ AIに任せてはいけない仕事は、顧客への自動送信、支払、返
         <li><strong>5分</strong>：グローバル指示に営業版テンプレを貼る</li>
         <li><strong>5分</strong>：「営業プロジェクト」を1つ作る</li>
         <li><strong>5分</strong>：プロジェクト指示（営業）を貼る</li>
-        <li><strong>10分</strong>：商品資料・価格表・事例・FAQ・提案テンプレを入れる（最新版・公開可のみ）</li>
+        <li><strong>5分</strong>：営業専用フォルダを1つ作る（顧客名簿の原本は入れない）</li>
+        <li><strong>5分</strong>：商品資料・価格表・事例・FAQ・提案テンプレを入れる（最新版・公開可のみ）</li>
         <li><strong>5分</strong>：最初の依頼（商談準備か週報）を1つ試す</li>
       </ul>
 
@@ -1009,6 +1172,33 @@ AIに任せてはいけない仕事は、顧客への自動送信、支払、返
           <div class="pc-label">✅ 安全に効かせる</div>
           <div class="pc-text"><ul><li>送信前に必ず自分が文面を確認する</li><li>価格・契約・納期は「社内確認が必要」と書かせる</li><li>資料は最新版・公開可のものだけにする</li><li>複数案を出させて自分で選ぶ</li><li>確定情報は資料・CRMの元データで照合する</li></ul></div>
         </div>
+      </div>
+
+      <h4 class="blk">運用チェックリスト（週1で確認）</h4>
+      <p class="lead">慣れてきた頃に崩れやすいポイントです。週1回さっと確認してください。</p>
+      <ul class="check-list">
+        <li><strong>送信</strong>：メール・提案は自分が最終確認してから送っている</li>
+        <li><strong>価格</strong>：最新の価格表だけを置き、金額は提案前に照合している</li>
+        <li><strong>フォルダ</strong>：顧客名簿の原本や個人情報をまとめて入れていない</li>
+        <li><strong>Memory</strong>：文体の補助に使い、案件状況は元データを見させている</li>
+        <li><strong>コネクタ</strong>：自動送信・自動更新を任せていない（下書きまで）</li>
+        <li><strong>定期タスク</strong>：出てきた下書きを確認してから使っている</li>
+      </ul>
+
+      <h4 class="blk">すぐ使える「営業AIの憲法」ミニ版</h4>
+      <p class="lead">迷ったら、この短い方針をグローバル指示またはプロジェクト指示の土台にしてください。</p>
+      <div class="paste">
+        <div class="paste-head">
+          <span class="paste-lbl">📋 そのまま貼れる｜営業AIの憲法ミニ版</span>
+          <button class="cp-btn" onclick="cpPre(this)">コピー</button>
+        </div>
+        <div class="paste-text">あなたは私の営業アシスタントです。最終判断者ではありません。商談準備、顧客理解、メール・提案の下書き、商談後フォロー、案件整理、週次報告を手伝ってください。
+
+顧客への送信、価格・値引き・契約条件・納期の確定、カレンダー変更、CRM更新、ファイル削除は行わないでください。これらが必要なときは「社内確認が必要」「人間確認が必要」と明記してください。
+
+価格・契約条件・案件状況は記憶に頼らず、資料やCRMの元データを確認してください。資料にないことを事実として断定しないでください。
+
+顧客に送る文面は押し売り感を避け、相手に配慮した自然な表現で、必要に応じて丁寧版・短い版など複数案を出してください。送信は必ず私が最終確認します。</div>
       </div>
     </div>
   </div>
