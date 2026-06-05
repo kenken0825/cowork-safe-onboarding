@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Cowork 安全導入ガイド｜「AI会社」を小さく安全に始める</title>
+  <meta name="description" content="Claude Cowork を中小企業で安全に導入するためのステップバイステップガイド。最初から全部任せず、専用フォルダ・専用プロジェクト・低リスク業務から小さく始める。コピペで使えるグローバル指示・プロジェクト指示テンプレ付き。">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:          #ffffff;
+      --bg2:         #f8fafc;
+      --bg3:         #f1f5f9;
+      --border:      #e2e8f0;
+      --text:        #334155;
+      --heading:     #0f172a;
+      --muted:       #94a3b8;
+      --navy:        #0f2a4a;
+      --teal:        #0d9488;
+      --teal-light:  #f0fdfa;
+      --teal-border: #99f6e4;
+      --amber:       #d97706;
+      --amber-light: #fffbeb;
+      --amber-border:#fde68a;
+      --red:         #dc2626;
+      --red-light:   #fef2f2;
+      --red-border:  #fecaca;
+      --blue:        #2563eb;
+      --blue-light:  #eff6ff;
+      --blue-border: #bfdbfe;
+      --green:       #059669;
+      --green-light: rgba(5,150,105,.08);
+      --code-bg:     #0f172a;
+      --code-text:   #22d3ee;
+      --radius:      12px;
+      --shadow:      0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+      --shadow-md:   0 4px 12px rgba(0,0,0,.08);
+    }
+    [data-theme="dark"] {
+      --bg:          #0e0c1a;
+      --bg2:         #17152c;
+      --bg3:         #201e38;
+      --border:      #2e2b4a;
+      --text:        #ccc8e8;
+      --heading:     #f0eeff;
+      --muted:       #7a7899;
+      --navy:        #818cf8;
+      --teal:        #2dd4bf;
+      --teal-light:  rgba(45,212,191,.07);
+      --teal-border: rgba(45,212,191,.25);
+      --amber:       #fbbf24;
+      --amber-light: rgba(251,191,36,.07);
+      --amber-border:rgba(251,191,36,.25);
+      --red:         #f87171;
+      --red-light:   rgba(248,113,113,.07);
+      --red-border:  rgba(248,113,113,.25);
+      --blue:        #60a5fa;
+      --blue-light:  rgba(96,165,250,.07);
+      --blue-border: rgba(96,165,250,.25);
+      --green:       #34d399;
+      --green-light: rgba(52,211,153,.08);
+      --code-bg:     #0a0a14;
+      --code-text:   #22d3ee;
+      --shadow:      0 1px 3px rgba(0,0,0,.3);
+      --shadow-md:   0 4px 12px rgba(0,0,0,.4);
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: 'Inter', 'Noto Sans JP', -apple-system, sans-serif;
+      font-size: 15px; line-height: 1.8;
+      transition: background-color .3s, color .3s;
+    }
+
+    /* HERO */
+    .hero { background: var(--bg); border-bottom: 1px solid var(--border); padding: 56px 24px 44px; text-align: center; }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--teal-light); border: 1px solid var(--teal-border);
+      color: var(--teal); font-size: 11px; font-weight: 700; letter-spacing: .06em;
+      padding: 4px 14px; border-radius: 20px; margin-bottom: 22px;
+    }
+    .hero h1 {
+      font-family: 'Inter', sans-serif; font-size: clamp(26px, 5vw, 40px);
+      font-weight: 900; color: var(--heading); line-height: 1.2;
+      margin-bottom: 12px; letter-spacing: -.02em;
+    }
+    .hero h1 em { font-style: normal; color: var(--teal); }
+    .hero-sub { color: var(--muted); font-size: 14px; margin-bottom: 28px; max-width: 620px; margin-left: auto; margin-right: auto; }
+    .badges { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 8px; padding: 6px 14px;
+      font-size: 13px; color: var(--text); font-weight: 500;
+    }
+
+    /* TOP BAR */
+    .top-bar {
+      background: var(--bg); border-bottom: 1px solid var(--border);
+      padding: 10px 20px; display: flex; align-items: center;
+      justify-content: center; gap: 8px;
+      position: sticky; top: 0; z-index: 200;
+    }
+    .top-bar .tb-title { font-size: 13px; font-weight: 700; color: var(--muted); }
+    .theme-btn {
+      position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 34px; height: 34px; border-radius: 50%;
+      border: 1.5px solid var(--border);
+      background: transparent; cursor: pointer; font-size: 15px; transition: all .2s;
+    }
+    .theme-btn:hover { background: var(--bg3); }
+
+    /* STEP NAV */
+    .step-nav {
+      background: var(--bg2); border-bottom: 1px solid var(--border);
+      padding: 8px 16px; display: flex; gap: 6px; overflow-x: auto;
+      justify-content: center; flex-wrap: wrap;
+      position: sticky; top: 53px; z-index: 199; scrollbar-width: none;
+    }
+    .step-nav::-webkit-scrollbar { display: none; }
+    .snav {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 14px; border-radius: 100px;
+      background: var(--bg); border: 1px solid var(--border);
+      color: var(--muted); font-size: 12px; font-weight: 700;
+      cursor: pointer; text-decoration: none; white-space: nowrap;
+      transition: all .2s; letter-spacing: .02em;
+    }
+    .snav:hover { border-color: var(--teal); color: var(--teal); background: var(--teal-light); }
+    .snav .n {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 19px; height: 19px; border-radius: 50%;
+      background: var(--bg3); font-size: 10px; font-weight: 700; transition: all .2s;
+    }
+    .snav:hover .n { background: var(--teal); color: #fff; }
+    /* NAV GROUP LABEL (two-track) */
+    .snav-grp {
+      flex-basis: 100%; text-align: center;
+      font-size: 10px; font-weight: 800; letter-spacing: .12em;
+      color: var(--muted); text-transform: uppercase;
+      padding: 3px 0 1px; opacity: .85;
+    }
+    .snav-grp .gl-dot { color: var(--teal); margin: 0 5px; }
+    /* AUDIENCE TABS */
+    .track-tabs { display: inline-flex; gap: 4px; background: var(--bg3); border-radius: 100px; padding: 4px; }
+    .track-tab { border: none; background: transparent; cursor: pointer; font-family: inherit; font-size: 13px; font-weight: 700; color: var(--muted); padding: 6px 18px; border-radius: 100px; transition: all .2s; white-space: nowrap; }
+    .track-tab.active { background: var(--teal); color: #fff; }
+    .track-tab:hover:not(.active) { color: var(--text); }
+    /* TRACK VISIBILITY */
+    .track { display: none; }
+    .track.active { display: block; }
+    .nav-track { display: none; }
+    .nav-track.active { display: contents; }
+
+    /* MAIN */
+    .main { max-width: 860px; margin: 0 auto; padding: 32px 20px 100px; }
+
+    /* INTRO */
+    .intro { background: var(--navy); border-radius: var(--radius); padding: 26px 26px; margin-bottom: 24px; box-shadow: var(--shadow-md); }
+    [data-theme="dark"] .intro { background: var(--bg2); border: 1px solid var(--border); }
+    .intro .ko { font-size: 11px; font-weight: 700; letter-spacing: .14em; color: var(--teal); text-transform: uppercase; margin-bottom: 8px; }
+    [data-theme="dark"] .intro .ko { color: var(--teal); }
+    .intro h2 { color: #fff; font-size: clamp(19px, 3.4vw, 24px); font-weight: 900; line-height: 1.4; margin-bottom: 10px; letter-spacing: -.01em; }
+    [data-theme="dark"] .intro h2 { color: var(--heading); }
+    .intro p { color: #cbd5e1; font-size: 14px; line-height: 1.85; }
+    [data-theme="dark"] .intro p { color: var(--text); }
+    .intro p strong { color: #fff; }
+    [data-theme="dark"] .intro p strong { color: var(--heading); }
+
+    /* PART DIVIDER (two-track) */
+    .part-div { display: flex; align-items: center; gap: 16px; margin: 36px 0 14px; }
+    .part-div:first-of-type { margin-top: 8px; }
+    .part-div::before, .part-div::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .part-div .pd-inner { flex-shrink: 0; text-align: center; }
+    .part-div .pd-kicker { font-size: 11px; font-weight: 800; letter-spacing: .16em; color: var(--teal); text-transform: uppercase; }
+    .part-div .pd-title { font-size: 15px; font-weight: 900; color: var(--heading); margin-top: 2px; }
+    .part-lead { font-size: 14.5px; line-height: 1.85; color: var(--text); margin: 0 4px 20px; }
+    .part-lead strong { color: var(--heading); }
+
+    /* ACCORDION */
+    .sec { margin-bottom: 16px; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+    .sec-head { background: var(--bg); padding: 18px 22px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; transition: background .15s; }
+    .sec-head:hover { background: var(--bg2); }
+    .sec-head-l { display: flex; align-items: center; gap: 16px; }
+    .step-circle { display: inline-flex; align-items: center; justify-content: center; width: 46px; height: 46px; border-radius: 50%; font-weight: 900; font-size: 18px; flex-shrink: 0; font-family: 'Inter', sans-serif; }
+    .sc-navy { background: var(--navy); color: #fff; }
+    .sc-teal { background: var(--teal); color: #fff; }
+    .sc-red  { background: var(--red); color: #fff; }
+    .sc-gray { background: var(--bg3); color: var(--muted); border: 1.5px solid var(--border); font-size: 20px; }
+    .sec-titles .sec-lbl { font-size: 10px; font-weight: 700; color: var(--teal); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 2px; }
+    .sec-titles .sec-title { font-size: 16px; font-weight: 700; color: var(--heading); }
+    .sec-right { display: flex; align-items: center; gap: 10px; }
+    .chev { color: var(--muted); font-size: 14px; flex-shrink: 0; transition: transform .3s; }
+    .sec.open .chev { transform: rotate(180deg); }
+    .sec-body { background: var(--bg); border-top: 1px solid var(--border); max-height: 0; overflow: hidden; transition: max-height .4s ease, padding .3s; padding: 0 24px; }
+    .sec.open .sec-body { max-height: 16000px; padding: 24px 24px 28px; }
+
+    .lead { font-size: 14.5px; line-height: 1.85; margin-bottom: 14px; }
+    h4.blk { font-size: 14px; font-weight: 800; color: var(--heading); margin: 20px 0 10px; display: flex; align-items: center; gap: 8px; }
+    h4.blk::before { content: ''; width: 4px; height: 16px; background: var(--teal); border-radius: 2px; }
+
+    /* STEP LIST */
+    .slist { list-style: none; counter-reset: sc; }
+    .si { display: flex; gap: 13px; margin-bottom: 14px; counter-increment: sc; }
+    .si::before { content: counter(sc); display: inline-flex; align-items: center; justify-content: center; min-width: 26px; height: 26px; border-radius: 50%; background: var(--teal); color: #fff; font-size: 12px; font-weight: 700; font-family: 'Inter', sans-serif; flex-shrink: 0; margin-top: 3px; }
+    .si-body { flex: 1; }
+    .si-body strong { color: var(--heading); font-weight: 700; }
+    .si-body small { color: var(--muted); font-size: 12px; display: block; margin-top: 2px; }
+
+    /* CALLOUTS */
+    .cl { border-left: 3px solid; border-radius: 0 8px 8px 0; padding: 12px 15px; margin: 14px 0; }
+    .cl-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+    .cl p { font-size: 14px; line-height: 1.75; }
+    .cl ul { font-size: 14px; line-height: 1.9; padding-left: 18px; }
+    .cl-tip  { background: var(--green-light); border-color: var(--green); }
+    .cl-tip .cl-title  { color: var(--green); }
+    .cl-warn { background: var(--amber-light); border-color: var(--amber); }
+    .cl-warn .cl-title { color: var(--amber); }
+    .cl-info { background: var(--blue-light);  border-color: var(--blue); }
+    .cl-info .cl-title { color: var(--blue); }
+    .cl-teal { background: var(--teal-light);  border-color: var(--teal); }
+    .cl-teal .cl-title { color: var(--teal); }
+    .cl-err  { background: var(--red-light);   border-color: var(--red); }
+    .cl-err .cl-title  { color: var(--red); }
+
+    /* INLINE CODE */
+    code { background: var(--code-bg); border-radius: 4px; padding: 1px 7px; font-family: 'Courier New', monospace; font-size: 13px; color: var(--code-text); }
+
+    /* PASTE BOX (multi-line, copyable) */
+    .paste { background: var(--code-bg); border-radius: 10px; margin: 14px 0; overflow: hidden; border: 1px solid rgba(255,255,255,.08); }
+    .paste-head { display: flex; align-items: center; justify-content: space-between; padding: 9px 14px; background: rgba(255,255,255,.04); border-bottom: 1px solid rgba(255,255,255,.07); }
+    .paste-lbl { font-size: 11px; font-weight: 700; letter-spacing: .06em; color: #7dd3fc; display: flex; align-items: center; gap: 6px; }
+    .paste-text { padding: 14px 16px; font-family: 'Courier New', monospace; font-size: 12.5px; line-height: 1.75; color: #e2e8f0; white-space: pre-wrap; word-break: break-word; overflow-x: auto; }
+    .cp-btn { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); color: #94a3b8; border-radius: 6px; padding: 4px 12px; font-size: 11px; cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: all .2s; font-family: inherit; font-weight: 700; }
+    .cp-btn:hover { background: rgba(255,255,255,.18); color: #e2e8f0; }
+    .cp-btn.copied { color: #22d3ee; border-color: rgba(34,211,238,.4); }
+
+    /* CODE BLOCK (single line / scaffold) */
+    .code-block { background: var(--code-bg); border-radius: 8px; padding: 14px 16px; margin: 12px 0; font-size: 13px; font-family: 'Courier New', monospace; color: var(--code-text); white-space: pre; overflow-x: auto; line-height: 1.7; }
+
+    /* TABLE */
+    .cmp-table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14px; }
+    .cmp-table th { background: var(--bg2); border: 1px solid var(--border); padding: 10px 14px; text-align: left; color: var(--heading); font-weight: 700; font-size: 13px; }
+    .cmp-table td { border: 1px solid var(--border); padding: 10px 14px; vertical-align: top; line-height: 1.65; }
+    .cmp-table tr:nth-child(even) td { background: var(--bg2); }
+    .cmp-table .ok { color: var(--green); font-weight: 700; }
+    .cmp-table .ng { color: var(--red); font-weight: 700; }
+
+    /* DO / DONT GRID */
+    .pc { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 14px 0; }
+    @media(max-width:600px){ .pc { grid-template-columns: 1fr; } }
+    .pc-box { border-radius: 10px; padding: 14px 16px; border: 1px solid var(--border); }
+    .pc-box.bad  { background: var(--red-light);  border-color: var(--red-border); }
+    .pc-box.good { background: var(--green-light); border-color: var(--green); }
+    .pc-label { font-size: 11px; font-weight: 700; letter-spacing: .06em; margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
+    .pc-box.bad .pc-label  { color: var(--red); }
+    .pc-box.good .pc-label { color: var(--green); }
+    .pc-text { font-size: 13.5px; line-height: 1.7; }
+    .pc-text ul { padding-left: 16px; }
+
+    /* CHECKLIST */
+    .check-list { list-style: none; }
+    .check-list li { display: flex; gap: 11px; padding: 9px 0; border-bottom: 1px dashed var(--border); font-size: 14px; line-height: 1.6; }
+    .check-list li:last-child { border-bottom: none; }
+    .check-list li::before { content: '☐'; color: var(--teal); font-size: 18px; flex-shrink: 0; line-height: 1.3; }
+
+    /* FOOTER NOTE */
+    .fn { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; margin-top: 24px; }
+    .fn h3 { color: var(--heading); font-size: 15px; margin-bottom: 10px; }
+    .fn ol { padding-left: 20px; font-size: 13px; line-height: 1.85; color: var(--muted); }
+    .fn ol a { word-break: break-all; }
+
+    .disc { margin-top: 22px; font-size: 12px; color: var(--muted); line-height: 1.7; text-align: center; }
+
+    hr { border: none; border-top: 1px solid var(--border); margin: 22px 0; }
+    a { color: var(--teal); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+    a:hover { opacity: .8; }
+    [data-theme="dark"] a { color: #5ce8ff; }
+    strong { color: var(--heading); font-weight: 700; }
+
+    @media(max-width:600px){
+      .hero { padding: 36px 16px 28px; }
+      .main { padding: 20px 12px 80px; }
+      .step-nav { flex-wrap: nowrap; justify-content: flex-start; padding: 7px 10px; gap: 4px; }
+      .snav-grp { flex-basis: auto; padding: 4px 6px; white-space: nowrap; }
+      .track-tab { padding: 6px 12px; font-size: 12px; }
+      .snav { padding: 4px 10px; font-size: 11px; }
+      .snav .n { width: 16px; height: 16px; font-size: 9px; }
+      .step-circle { width: 36px; height: 36px; font-size: 14px; }
+      .sec-head { padding: 12px 14px; }
+      .sec-head-l { gap: 10px; }
+      .sec-titles .sec-lbl { font-size: 9px; letter-spacing: .08em; }
+      .sec-titles .sec-title { font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-tag">🛡️ Claude Cowork｜安全導入ガイド</div>
+  <h1>Claude Cowork を<br><em>小さく安全に</em>始める</h1>
+  <p class="hero-sub">新人を1人雇うつもりで。最初から全部を任せず、専用フォルダ・専用プロジェクト・低リスクな仕事から。コピペで使えるテンプレート付き。</p>
+  <div class="badges">
+    <span class="badge">👔 経営者＋現場担当者向け</span>
+    <span class="badge">📋 コピペ即利用</span>
+    <span class="badge">🗓 初月30日ロードマップ</span>
+    <span class="badge">💳 Pro / Max / Team / Enterprise</span>
+  </div>
+</header>
+
+<!-- TOP BAR -->
+<nav class="top-bar">
+  <div class="track-tabs" role="tablist">
+    <button class="track-tab active" data-track="exec" onclick="setTrack('exec')">👔 経営者向け</button>
+    <button class="track-tab" data-track="sales" onclick="setTrack('sales')">💼 営業担当者向け</button>
+  </div>
+  <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="ライト／ダークモード切替">🌙</button>
+</nav>
+
+<!-- STEP NAV -->
+<nav class="step-nav">
+  <span class="nav-track active" data-track="exec">
+    <a class="snav" href="#s0" onclick="openSec('s0')"><span class="n">◎</span> 合言葉</a>
+    <a class="snav" href="#s1" onclick="openSec('s1')"><span class="n">1</span> 3つを決める</a>
+    <a class="snav" href="#s2" onclick="openSec('s2')"><span class="n">2</span> 利用条件</a>
+    <a class="snav" href="#s3" onclick="openSec('s3')"><span class="n">3</span> グローバル指示</a>
+    <a class="snav" href="#s4" onclick="openSec('s4')"><span class="n">4</span> プロジェクト</a>
+    <a class="snav" href="#s5" onclick="openSec('s5')"><span class="n">5</span> 作業フォルダ</a>
+    <a class="snav" href="#s6" onclick="openSec('s6')"><span class="n">6</span> Memory</a>
+    <a class="snav" href="#s7" onclick="openSec('s7')"><span class="n">7</span> プラグイン・コネクタ</a>
+    <a class="snav" href="#s8" onclick="openSec('s8')"><span class="n">8</span> スケジュール</a>
+    <a class="snav" href="#s9" onclick="openSec('s9')"><span class="n">9</span> 30日ロードマップ</a>
+    <a class="snav" href="#s10" onclick="openSec('s10')"><span class="n">✓</span> チェックリスト</a>
+  </span>
+  <span class="nav-track" data-track="sales">
+    <a class="snav" href="#sl1" onclick="openSec('sl1')"><span class="n">1</span> 基本方針</a>
+    <a class="snav" href="#sl2" onclick="openSec('sl2')"><span class="n">2</span> プロジェクト</a>
+    <a class="snav" href="#sl3" onclick="openSec('sl3')"><span class="n">3</span> 準備資料</a>
+    <a class="snav" href="#sl4" onclick="openSec('sl4')"><span class="n">4</span> Memory</a>
+    <a class="snav" href="#sl5" onclick="openSec('sl5')"><span class="n">5</span> 依頼テンプレ</a>
+    <a class="snav" href="#sl6" onclick="openSec('sl6')"><span class="n">✓</span> 30分設定</a>
+  </span>
+</nav>
+
+<main class="main">
+
+  <!-- INTRO -->
+  <div class="intro">
+    <div class="ko">安全導入の合言葉</div>
+    <h2>「最初から全部任せない」</h2>
+    <p>Claude Cowork は通常のチャットより強力です。Claude Desktop 上で動き、あなたが選んだファイルを読み・書き換え、接続サービスやプラグインを使って複数の手順がある仕事を進められます。<strong>だからこそ「便利なチャット」ではなく、新人社員を1人雇う感覚で導入する</strong>のが安全です。最初は見せる資料を限定し、任せる仕事を限定し、送信・支払・契約・削除などの重要操作は必ず人間が確認します。</p>
+  </div>
+
+  <!-- TRACK: 経営者向け -->
+  <div class="track active" data-track="exec">
+
+  <div class="part-div">
+    <div class="pd-inner">
+      <div class="pd-kicker">経営者・部門責任者向け</div>
+      <div class="pd-title">全社で安全に始める10ステップ</div>
+    </div>
+  </div>
+
+  <!-- S0: 合言葉 / 原則 -->
+  <div class="sec open" id="s0">
+    <div class="sec-head" onclick="tog(this)">
+      <div class="sec-head-l">
+        <div class="step-circle sc-navy">◎</div>
+        <div class="sec-titles">
+          <div class="sec-lbl">まず読む</div>
+          <div class="sec-title">安全な導入の4原則</div>
+        </div>
+      </div>
+      <div class="sec-right"><span class="chev">▼</span></div>
+    </div>
+    <div class="sec-body">
+      <p class="lead">全社の情報や外部サービスを最初から自由に使わせるのではなく、<strong>専用フォルダ・専用プロジェクト・限定した接続先・低リスクな仕事</strong>から始めます。原則は次の4つだけ。</p>
+      <table class="cmp-table">
+        <thead><tr><th style="width:24%">原則</th><th>やってよいこと</th><th>避けること</th></tr></thead>
+        <tbody>
+          <tr><td><strong>小さく始める</strong></td><td>競合調査・会議資料案・週次レポート案を作らせる</td><td class="ng">いきなり全社データやメールを自由に扱わせる</td></tr>
+          <tr><td><strong>人間が最終確認</strong></td><td>メール・請求・契約・採用の<strong>下書き</strong>を作らせる</td><td class="ng">送信・支払・契約・採否判断を任せる</td></tr>
+          <tr><td><strong>作業場所を分ける</strong></td><td>Claude 専用フォルダを作る</td><td class="ng">原本資料が入ったフォルダ全体を渡す</td></tr>
+          <tr><td><strong>段階的に広げる</strong></td><td>成果が安定してから接続先を増やす</td><td class="ng">最初から多数のサービスを接続する</td></tr>
+        </tbody>
+      </table>
+      <div class="cl cl-info">
+        <div class="cl-title">ℹ️ Claude Code は前提にしません</div>
+        <p>Claude Code は資料整理に役立つ選択肢ですが、Cowork 導入の必須手順ではありません。安全に始めるうえで本当に重要なのは、<strong>資料・権限・仕事の範囲を小さく区切ること</strong>です。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- S1: 3つを決める -->
+  <div class="sec" id="s1">
+    <div class="sec-head" onclick="tog(this)">
+      <div class="sec-head-l">
+        <div class="step-circle sc-teal">1</div>
+        <div class="sec-titles">
+          <div class="sec-lbl">導入前に決める</div>
+          <div class="sec-title">経営者が決める3つのこと</div>
+        </div>
+      </div>
+      <div class="sec-right"><span class="chev">▼</span></div>
+    </div>
+    <div class="sec-body">
+      <p class="lead">ここを曖昧にしたまま始めると、AI に何を任せてよいか分からなくなり、結果的に権限を広げすぎます。導入作業に入る前に次の3つを決めてください。</p>
+      <table class="cmp-table">
+        <thead><tr><th style="width:30%">決めること</th><th>内容</th><th style="width:34%">例</th></tr></thead>
+        <tbody>
+          <tr><td><strong>AI に任せる仕事</strong></td><td>最初の1か月で任せる低リスク業務</td><td>競合調査、会議資料案、営業週報の要約</td></tr>
+          <tr><td><strong>AI に任せない仕事</strong></td><td>人間承認が必須の業務</td><td class="ng">支払、返金、契約、採用判断、顧客への自動送信</td></tr>
+          <tr><td><strong>AI に見せる情報</strong></td><td>最初に使ってよい資料・フォルダ</td><td>商品説明、公開済み資料、営業テンプレ、匿名化した商談メモ</td></tr>
+        </tbody>
+      </table>
+      <h4 class="blk">最初は「AI経営企画担当」がおすすめ</h4>
+      <p class="lead">外部送信や支払を伴わず、成果物も確認しやすいので、最初の1人に向いています。</p>
+      <table class="cmp-table">
+        <thead><tr><th style="width:26%">初期AI担当</th><th>任せる仕事</th><th>初期に向く理由</th></tr></thead>
+        <tbody>
+          <tr><td><strong>AI経営企画</strong></td><td>競合調査、週次レポート、会議資料案</td><td>外部送信や支払を伴わず、確認しやすい</td></tr>
+          <tr><td><strong>AI営業企画</strong></td><td>提案書案、商談メモ整理、FAQ作成</td><td>送信前確認を残せば安全に始めやすい</td></tr>
+          <tr><td><strong>AI採用補佐</strong></td><td>求人票案、面接質問案、候補者比較表</td><td>採否判断を禁止すれば補助役として使える</td></tr>
+          <tr><td><strong>AI経理補佐</strong></td><td>経費分類案、月次資料のたたき台</td><td>数字確認が必須なので初期は慎重に</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- S2: 利用条件 -->
+  <div class="sec" id="s2">
+    <div class="sec-head" onclick="tog(this)">
+      <div class="sec-head-l">
+        <div class="step-circle sc-teal">2</div>
+        <div class="sec-titles">
+          <div class="sec-lbl">Step 1</div>
+          <div class="sec-title">Claude Desktop と利用条件を確認する</div>
+        </div>
+      </div>
+      <div class="sec-right"><span class="chev">▼</span></div>
+    </div>
+    <div class="sec-body">
+      <p class="lead">Claude Cowork は <strong>Claude Desktop アプリの中で使う機能</strong>です。Web 版やモバイルでは使えません。次の準備を行います。</p>
+      <table class="cmp-table">
+        <thead><tr><th style="width:24%">確認項目</th><th>実施内容</th><th>意味</th></tr></thead>
+        <tbody>
+          <tr><td><strong>プラン</strong></td><td>Pro・Max・Team・Enterprise の有料プランを確認</td><td>Cowork が使える状態か（無料プラン不可）</td></tr>
+          <tr><td><strong>アプリ</strong></td><td>Claude Desktop（macOS / Windows）を最新版にする</td><td>古いアプリだと機能が出ないことがある</td></tr>
+          <tr><td><strong>端末</strong></td><td>会社で使う業務用 PC を決める</td><td>PC 上のファイルやアプリに関わるため私物 PC は避ける</td></tr>
+          <tr><td><strong>ネット環境</strong></td><td>安定したインターネット接続を用意</td><td>作業中に切れると中断しやすい</td></tr>
+        </tbody>
+      </table>
+      <div class="cl cl-warn">
+        <div class="cl-title">⚠️ アプリは開いたままにする</div>
+        <p>Cowork は仕事中に Claude Desktop を開いておく必要があります。<strong>アプリを閉じるとセッションは終了します。</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- S3: グローバル指示 -->
+  <div class="sec" id="s3">
+    <div class="sec-head" onclick="tog(this)">
+      <div class="sec-head-l">
+        <div class="step-circle sc-teal">3</div>
+        <div class="sec-titles">
+          <div class="sec-lbl">Step 2 ｜ AI会社の憲法</div>
+          <div class="sec-title">グローバル指示を設定する</div>
+        </div>
+      </div>
+      <div class="sec-right"><span class="chev">▼</span></div>
+    </div>
+    <div class="sec-body">
+      <p class="lead">グローバル指示（Global instructions）は、<strong>すべての Cowork セッションに共通して効く基本方針</strong>です。<code>設定 → Cowork → グローバル指示</code> から登録します。会社共通の安全ルールを、短く・強いルールだけに絞って入れます。</p>
+      <div class="paste">
+        <div class="paste-head">
+          <span class="paste-lbl">📋 そのまま貼れる｜グローバル指示テンプレート</span>
+          <button class="cp-btn" onclick="cpPre(this)">コピー</button>
+        </div>
+        <div class="paste-text">あなたは当社のAI業務補佐です。最終判断者ではありません。
+
+次の操作は、必ず人間の明確な承認を得てから行ってください。メール・チャット・SNS・フォームの送信、支払、返金、請求確定、契約、署名依頼、採用・解雇判断、行政提出、原本ファイルの上書き、ファイルの永久削除。
+
+作業では、指定されたフォルダ、プロジェクト、接続先、資料だけを使ってください。関係のないファイル、Webサイト、アプリにはアクセスしないでください。
+
+成果物は、経営者が判断しやすいように、1.結論、2.根拠、3.リスク、4.確認が必要な点、5.次に取る行動、の順でまとめてください。
+
+不明点や根拠が弱い内容は断定せず、「未確認」「要確認」と明記してください。</div>
+      </div>
+      <div class="cl cl-tip">
+        <div class="cl-title">✅ 反映のコツ</div>
+        <p>グローバル指示は<strong>新しいチャットを開いたとき</strong>に読み込まれます。設定後はすでに開いているセッションを閉じ、新しく始めてください。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- S4: プロジェクト -->
+  <div class="sec" id="s4">
+    <div class="sec-head" onclick="tog(this)">
+      <div class="sec-head-l">
+        <div class="step-circle sc-teal">4</div>
+        <div class="sec-titles">
+          <div class="sec-lbl">Step 3 ｜ 部署を1つだけ作る</div>
+          <div class="sec-title">最初のプロジェクトと「プロジェクト指示」</div>
+        </div>
+      </div>
+      <div class="sec-right"><span class="chev">▼</span></div>
+    </div>
+    <div class="sec-body">
+      <p class="lead">プロジェクトは、関連する仕事をまとめる<strong>専用の作業場所</strong>です。専用のファイル・文脈・指示・Memory を持ちます。営業・経理・人事を全部作る必要はありません。<strong>初月は1つだけ</strong>。おすすめは「AI経営企画室」です。</p>
+      <table class="cmp-table">
+        <thead><tr><th style="width:26%">プロジェクト名</th><th>最初に入れる資料</th><th>最初に任せる仕事</th></tr></thead>
+        <tbody>
+          <tr><td><strong>AI経営企画室</strong></td><td>会社概要、商品説明、公開済み事例</td><td>競合調査、週次レポート、会議資料案</td></tr>
+          <tr><td>AI営業企画室</td><td>商品資料、価格表、FAQ、提案書テンプレ</td><td>提案書案、メール下書き、商談準備</td></tr>
+          <tr><td>AI採用補佐室</td><td>求人票、会社紹介、面接基準</td><td>求人票案、面接質問案、候補者比較表</td></tr>
+        </tbody>
+      </table>
+      <h4 class="blk">プロジェクト指示テンプレート（AI経営企画室）</h4>
+      <p class="lead">グローバル指示が「会社全体の憲法」なら、プロジェクト指示は「部署ごとの仕事の進め方」です。</p>
+      <div class="paste">
+        <div class="paste-head">
+          <span class="paste-lbl">📋 そのまま貼れる｜プロジェクト指示</span>
+          <button class="cp-btn" onclick="cpPre(this)">コピー</button>
+        </div>
+        <div class="paste-text">このプロジェクトは、当社の経営判断を助けるための「AI経営企画室」です。
+
+主な仕事は、競合調査、市場調査、週次レポート、会議資料案、社内課題の整理です。外部送信、支払、契約、採用判断、ファイル削除は行わず、必要な場合は必ず人間に確認してください。
+
+調査結果は、必ず情報源、根拠、未確認事項を分けて書いてください。推測は推測として明記してください。
+
+成果物は、経営者がすぐ判断できるように、最初に3行以内の結論を書き、その後に比較表、根拠、リスク、次の行動を続けてください。
+
+会社資料にない内容を会社方針として断定しないでください。分からない場合は「会社方針として未確認」と書いてください。</div>
+      </div>
+      <div class="cl cl-info">
+        <div class="cl-title">ℹ️ 業種・自社仕様はここに書く</div>
+        <p>事業所名・業種特有のルール・レポート様式など<strong>自社固有の設定はプロジェクト指示側</strong>に書きます。グローバル指示（全社共通の安全ルール）には書きません。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- S5: 作業フォルダ -->
+  <div class="sec" id="s5">
+    <div class="sec-head" onclick="tog(this)">
+      <div class="sec-head-l">
+        <div class="step-circle sc-teal">5</div>
+        <div class="sec-titles">
+          <div class="sec-lbl">Step 4</div>
+          <div class="sec-title">作業フォルダを小さく用意する</div>
+        </div>
+      </div>
+      <div class="sec-right"><span class="chev">▼</span></div>
+    </div>
+    <div class="sec-body">
+      <p class="lead">Cowork は選んだファイルを<strong>読み・書き・場合によっては永久削除</strong>できます。便利な反面、注意が必要です。広いアクセスを与えず、まず Claude 専用フォルダを作りましょう。</p>
+      <div class="code-block">Claude_Cowork_Workspace/
+├── 00_company_basic/      会社概要・商品説明・基本方針
+├── 10_inputs/             AIに読ませる資料の「コピー」
+├── 20_working/            AIの作業途中ファイル
+├── 30_outputs_draft/      AIの下書き成果物（人間確認前）
+├── 40_outputs_reviewed/   人間が確認済みの成果物
+└── 90_archive/            古い成果物の保管</div>
+      <div class="cl cl-err">
+        <div class="cl-title">🚫 原本を直接触らせない</div>
+        <p>契約書・給与・財務・顧客名簿・従業員情報は<strong>最初から入れない</strong>でください。必要になっても、匿名化したコピーや一部だけを使うところから始めます。公式でも「広いファイルアクセスより専用フォルダ＋重要ファイルのバックアップ」が推奨されています。</p>
+      </div>
+      <div class="cl cl-warn">
+        <div class="cl-title">⚠️ 削除には必ず許可が要る</div>
+        <p>Cowork はファイルを永久削除する前に<strong>明示的な許可（「許可（Allow）」）を求めます。</strong>保護はありますが「攻撃リスクはゼロではない」ため、常に注意が必要です。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- S6: Memory -->
+  <div class="sec" id="s6">
+    <div class="sec-head" onclick="tog(this)">
+      <div class="sec-head-l">
+        <div class="step-circle sc-teal">6</div>
+        <div class="sec-titles">
+          <div class="sec-lbl">Step 5</div>
+          <div class="sec-title">Memory は「育てる」が「信じ込みすぎない」</div>
+        </div>
+      </div>
+      <div class="sec-right"><span class="chev">▼</span></div>
+    </div>
+    <div class="sec-body">
+      <p class="lead">プロジェクトでは Memory が有効で、行った仕事の文脈を記憶し次回に活かせます。Memory は<strong>プロジェクトごとに分かれ</strong>、別プロジェクトへは持ち越されません。便利ですが、記憶を会社の正式ルールだと思い込まないことが大切です。</p>
+      <div class="pc">
+        <div class="pc-box good">
+          <div class="pc-label">✅ よい使い方</div>
+          <div class="pc-text"><ul><li>「報告書は結論を先に書く」など会社の好みを覚えさせる</li><li>週次レポートの形式を覚えさせる</li><li>プロジェクト内の文体・文脈を覚えさせる</li></ul></div>
+        </div>
+        <div class="pc-box bad">
+          <div class="pc-label">🚫 避ける使い方</div>
+          <div class="pc-text"><ul><li>重要な承認ルールを Memory だけに任せる</li><li>契約条件や価格決定を記憶だけで運用する</li><li>他のプロジェクトにも同じ記憶がある前提で使う</li></ul></div>
+        </div>
+      </div>
+      <p class="lead">正式ルールはグローバル指示・プロジェクト指示・会社資料に書くのが安全です。月1回、次の点検プロンプトで棚卸ししましょう。</p>
+      <div class="paste">
+        <div class="paste-head">
+          <span class="paste-lbl">📋 月次の Memory 点検プロンプト</span>
+          <button class="cp-btn" onclick="cpPre(this)">コピー</button>
+        </div>
+        <div class="paste-text">このプロジェクトであなたが前提として覚えている当社のルール、好み、業務手順を一覧にしてください。正式な会社ルールと、会話から推測しているだけの内容を分けて書いてください。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S7: プラグイン・コネクタ -->
+  <div class="sec" id="s7">
+    <div class="sec-head" onclick="tog(this)">
+      <div class="sec-head-l">
+        <div class="step-circle sc-teal">7</div>
+        <div class="sec-titles">
+          <div class="sec-lbl">Step 6-7</div>
+          <div class="sec-title">プラグイン・コネクタは段階的に広げる</div>
+        </div>
+      </div>
+      <div class="sec-right"><span class="chev">▼</span></div>
+    </div>
+    <div class="sec-body">
+      <p class="lead">プラグインは、役割や業務に合わせて Claude の働き方を整える仕組み（スキル・コネクタ・サブエージェントのパッケージ）です。コネクタは外部サービス（Google Drive・Gmail・Slack 等）とつながる仕組み。便利な反面、<strong>Claude のできる範囲と情報の範囲を広げます。</strong></p>
+      <div class="cl cl-warn">
+        <div class="cl-title">⚠️ 信頼できるものだけ入れる</div>
+        <p>プラグインにはローカルで動く仕組みが含まれる場合があります。<strong>Claude Desktop の公式ディレクトリの検証済み拡張</strong>に絞り、インストール前に要求される権限を必ず確認してください。</p>
+      </div>
+      <h4 class="blk">コネクタを追加する順番</h4>
+      <table class="cmp-table">
+        <thead><tr><th style="width:8%">段階</th><th>接続するもの</th><th>注意点</th></tr></thead>
+        <tbody>
+          <tr><td><strong>1</strong></td><td>公開情報・社内の低機密資料</td><td>機密資料を混ぜない</td></tr>
+          <tr><td><strong>2</strong></td><td>カレンダー、会議メモ</td><td>個人情報・顧客名の扱いに注意</td></tr>
+          <tr><td><strong>3</strong></td><td>CRM、営業ツール</td><td class="ng">顧客への送信は禁止し、下書きまで</td></tr>
+          <tr><td><strong>4</strong></td><td>会計・決済ツール</td><td class="ng">支払・返金・給与・税務判断は人間承認</td></tr>
+          <tr><td><strong>5</strong></td><td>契約・署名ツール</td><td class="ng">署名依頼・契約締結は責任者承認</td></tr>
+        </tbody>
+      </table>
+      <div class="cl cl-teal">
+        <div class="cl-title">💡 「接続できるから」ではなく「必要になったら」</div>
+        <p>まず低リスクなプロジェクトで成果を確認し、次に営業、最後に経理や契約のような重要領域へ広げます。最初の1か月は、プラグインを使う場合でも<strong>送信・投稿・支払を含まない仕事に限定</strong>してください。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- S8: スケジュール -->
+  <div class="sec" id="s8">
+    <div class="sec-head" onclick="tog(this)">
+      <div class="sec-head-l">
+        <div class="step-circle sc-teal">8</div>
+        <div class="sec-titles">
+          <div class="sec-lbl">Step 8</div>
+          <div class="sec-title">定期タスク（スケジュール）は「読む・まとめる」から</div>
+        </div>
+      </div>
+      <div class="sec-right"><span class="chev">▼</span></div>
+    </div>
+    <div class="sec-body">
+      <p class="lead">スケジュール（定期タスク）は、Cowork に定期的な仕事を任せる仕組みです。レポート・要約・調査などを自動で作れます。ただし<strong>自動実行はリアルタイムで監視できない</strong>ため、低リスクな仕事から始めます。</p>
+      <div class="pc">
+        <div class="pc-box good">
+          <div class="pc-label">✅ 初期に向く定期タスク</div>
+          <div class="pc-text"><ul><li>毎週の競合ニュース要約</li><li>営業活動の週次まとめ</li><li>会議前の資料チェック（下書き）</li><li>未対応タスク一覧の整理</li></ul></div>
+        </div>
+        <div class="pc-box bad">
+          <div class="pc-label">🚫 最初は避ける</div>
+          <div class="pc-text"><ul><li>顧客へのメール自動送信</li><li>請求・返金・支払の自動処理</li><li>契約書の自動送付</li><li>採用候補者の自動合否判定</li></ul></div>
+        </div>
+      </div>
+      <div class="paste">
+        <div class="paste-head">
+          <span class="paste-lbl">📋 そのまま使える｜定期タスク依頼文</span>
+          <button class="cp-btn" onclick="cpPre(this)">コピー</button>
+        </div>
+        <div class="paste-text">毎週月曜日の朝に、指定フォルダ内の営業メモと公開情報をもとに、先週の営業活動の要約、今週の優先対応、リスク、経営者に確認が必要な点を1ページにまとめてください。
+
+顧客への送信、カレンダー変更、請求、契約、ファイル削除は行わないでください。必要な場合は「人間確認が必要」と書いてください。</div>
+      </div>
+      <div class="cl cl-info">
+        <div class="cl-title">ℹ️ 実行はアプリが開いているときだけ</div>
+        <p>定期タスクは Claude Desktop が開いていて PC が起きているときに動きます。スリープ中やアプリを閉じていると実行はスキップされ、後で再実行されることがあります。実行後は必ず結果を確認し、不要なタスクは停止・削除してください。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- S9: 30日ロードマップ -->
+  <div class="sec" id="s9">
+    <div class="sec-head" onclick="tog(this)">
+      <div class="sec-head-l">
+        <div class="step-circle sc-navy">9</div>
+        <div class="sec-titles">
+          <div class="sec-lbl">初月の進め方</div>
+          <div class="sec-title">30日で「1つの成功例」を作る</div>
+        </div>
+      </div>
+      <div class="sec-right"><span class="chev">▼</span></div>
+    </div>
+    <div class="sec-body">
+      <p class="lead">完璧な AI 運用を最初から目指さず、<strong>30日で安全に1つの成功例</strong>を作ることを目標にします。</p>
+      <table class="cmp-table">
+        <thead><tr><th style="width:14%">期間</th><th>やること</th><th>成功条件</th></tr></thead>
+        <tbody>
+          <tr><td><strong>1週目</strong></td><td>グローバル指示を設定し、AI経営企画室を作る</td><td>禁止事項と承認ルールが明文化されている</td></tr>
+          <tr><td><strong>2週目</strong></td><td>専用フォルダに低リスク資料を入れ、競合調査や会議資料案を依頼</td><td>結果を経営者が確認できる形で出せる</td></tr>
+          <tr><td><strong>3週目</strong></td><td>Memory やプロジェクト指示を調整し、成果物の形式を安定させる</td><td>同じ形式でレポートが出る</td></tr>
+          <tr><td><strong>4週目</strong></td><td>プラグインや接続サービスを1つだけ試す</td><td>送信・支払なしの低リスク業務で効果を確認</td></tr>
+        </tbody>
+      </table>
+      <div class="cl cl-tip">
+        <div class="cl-title">✅ 1か月目のゴール</div>
+        <p>「AI が全部できる状態」ではありません。<strong>任せてよい仕事・任せてはいけない仕事・確認が必要な仕事の境界線が見える状態</strong>です。これができれば、プラグイン・接続サービス・定期タスクを安全に広げていけます。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- S10: チェックリスト -->
+  <div class="sec" id="s10">
+    <div class="sec-head" onclick="tog(this)">
+      <div class="sec-head-l">
+        <div class="step-circle sc-teal">✓</div>
+        <div class="sec-titles">
+          <div class="sec-lbl">経営者用</div>
+          <div class="sec-title">安全導入チェックリスト</div>
+        </div>
+      </div>
+      <div class="sec-right"><span class="chev">▼</span></div>
+    </div>
+    <div class="sec-body">
+      <p class="lead">導入前・毎週の運用確認・接続サービス追加前に、次を確認してください。</p>
+      <ul class="check-list">
+        <li><strong>AI の役割</strong>：補佐役であり、最終判断者ではないと明記している</li>
+        <li><strong>禁止事項</strong>：送信・支払・返金・契約・採用判断・削除を人間承認にしている</li>
+        <li><strong>作業フォルダ</strong>：Claude 専用フォルダを作り、原本資料を入れていない</li>
+        <li><strong>プロジェクト</strong>：最初のプロジェクトを1つに絞っている</li>
+        <li><strong>プロジェクト指示</strong>：部署ごとの仕事の範囲を明記している</li>
+        <li><strong>Memory</strong>：補助として使い、正式ルールは指示文や資料に書いている</li>
+        <li><strong>プラグイン</strong>：検証済みのものだけを入れ、権限を確認している</li>
+        <li><strong>接続サービス</strong>：必要なものだけを段階的に追加している</li>
+        <li><strong>定期タスク</strong>：要約・調査・レポートなど低リスク業務から始めている</li>
+        <li><strong>結果確認</strong>：最初の数回は経営者または責任者が結果を確認している</li>
+      </ul>
+      <h4 class="blk">すぐ使える「AI会社の憲法」ミニ版</h4>
+      <p class="lead">導入初日に使える短い憲法です。会社ごとに調整して、グローバル指示またはプロジェクト指示の土台にしてください。</p>
+      <div class="paste">
+        <div class="paste-head">
+          <span class="paste-lbl">📋 そのまま貼れる｜AI会社の憲法ミニ版</span>
+          <button class="cp-btn" onclick="cpPre(this)">コピー</button>
+        </div>
+        <div class="paste-text">当社のClaude Coworkは、経営者と社員を補佐するAI会社として使います。AIは調査、要約、比較、下書き、資料作成、チェックリスト化を担当します。最終判断は必ず人間が行います。
+
+AIに任せてよい仕事は、競合調査、会議資料案、営業資料の下書き、商談メモ整理、週次レポート案、社内マニュアル案の作成です。
+
+AIに任せてはいけない仕事は、顧客への自動送信、支払、返金、請求確定、契約締結、署名依頼、採用・解雇判断、行政提出、原本ファイルの上書き、ファイルの永久削除です。これらが必要な場合は、必ず人間に確認してください。
+
+指定されたプロジェクト、フォルダ、資料、接続先だけを使ってください。関係のないファイルやサービスにアクセスしないでください。
+
+成果物では、結論、根拠、リスク、未確認事項、次の行動を分けて書いてください。根拠が弱い場合は断定せず、「要確認」と明記してください。</div>
+      </div>
+    </div>
+  </div>
+
+  </div><!-- /TRACK exec -->
+
+  <!-- TRACK: 営業担当者向け -->
+  <div class="track" data-track="sales" id="srole">
+
+  <div class="part-div">
+    <div class="pd-inner">
+      <div class="pd-kicker">営業担当者向け</div>
+      <div class="pd-title">自分専用の営業アシスタントを作る</div>
+    </div>
+  </div>
+  <p class="part-lead">このパートは、<strong>現場で働く営業担当者個人</strong>が Cowork を「自分専用のアシスタント」にするための実践セットです。「経営者向け」タブの安全原則（送信・支払・契約は人間が最終確認）はそのままに、営業の日々の仕事に直結する設定とテンプレートを用意しました。今後、経理・採用などの役割版も追加していきます。</p>
+
+  <!-- SALES STEP 1: 基本方針 -->
+  <div class="sec open" id="sl1">
+    <div class="sec-head" onclick="tog(this)">
+      <div class="sec-head-l">
+        <div class="step-circle sc-navy">1</div>
+        <div class="sec-titles">
+          <div class="sec-lbl">営業 STEP 1 ｜ 基本方針</div>
+          <div class="sec-title">グローバル指示と「設定場所マップ」</div>
+        </div>
+      </div>
+      <div class="sec-right"><span class="chev">▼</span></div>
+    </div>
+    <div class="sec-body">
+      <p class="lead">まず、アシスタントの<strong>基本方針</strong>を決めます。すべてのセッションに効く「グローバル指示」と、どこに何を書くかの地図です。</p>
+
+      <h4 class="blk">設定場所と営業での役割</h4>
+      <p class="lead">どこに何を書くかを最初に押さえると、設定で迷いません。営業役割ごとの置き場所は次のとおりです。</p>
+      <table class="cmp-table">
+        <thead><tr><th style="width:30%">設定場所</th><th>営業での役割</th></tr></thead>
+        <tbody>
+          <tr><td><strong>グローバル指示</strong></td><td>営業アシスタントの基本方針（全セッション共通）</td></tr>
+          <tr><td><strong>営業プロジェクト</strong></td><td>日々の営業作業をまとめる場所</td></tr>
+          <tr><td><strong>プロジェクト指示</strong></td><td>提案・メール・報告の「型」</td></tr>
+          <tr><td><strong>プロジェクト資料</strong></td><td>商品資料・価格表・事例・FAQ・提案テンプレ</td></tr>
+          <tr><td><strong>Memory</strong></td><td>文体・報告形式・自分の営業スタイル</td></tr>
+          <tr><td><strong>Small Business プラグイン</strong></td><td>営業整理・顧客対応・週報の補助</td></tr>
+        </tbody>
+      </table>
+      <div class="cl cl-info">
+        <div class="cl-title">ℹ️ Memory は補助。正本は資料とCRMを見る</div>
+        <p>Memory はプロジェクト単位で、あなたの文体や報告の好みを覚えるのに向いています。ただし<strong>価格・契約条件・最新の案件状況は記憶に頼らず、資料やCRMの元データを必ず確認</strong>させてください。</p>
+      </div>
+
+      <h4 class="blk">グローバル指示（営業版）</h4>
+      <p class="lead">すべてのセッションに効く営業アシスタントの基本方針です。<code>設定 → Cowork → グローバル指示</code> に貼ります。</p>
+      <div class="paste">
+        <div class="paste-head">
+          <span class="paste-lbl">📋 そのまま貼れる｜グローバル指示（営業版）</span>
+          <button class="cp-btn" onclick="cpPre(this)">コピー</button>
+        </div>
+        <div class="paste-text">私は営業担当者です。Claudeには、商談準備、顧客理解、営業メール作成、提案書の下書き、商談後フォロー、案件整理、週次報告を支援する営業アシスタントとして働いてほしいです。
+回答は営業現場ですぐ使える形に。専門用語を避け、結論・理由・次の行動が分かるよう整理してください。
+顧客に送る文章は押し売り感を避け、相手の状況に配慮した自然な文面に。必要に応じて丁寧版/カジュアル版/短い版など複数案を出してください。
+顧客情報・価格・契約条件・納期・値引き・特別対応は断定せず、必要なら「社内確認が必要」と明記してください。
+商談準備では、顧客の状況・想定課題・提供できる価値・聞くべき質問・想定反論・次の一手を整理してください。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SALES STEP 2: プロジェクト設定 -->
+  <div class="sec" id="sl2">
+    <div class="sec-head" onclick="tog(this)">
+      <div class="sec-head-l">
+        <div class="step-circle sc-teal">2</div>
+        <div class="sec-titles">
+          <div class="sec-lbl">営業 STEP 2 ｜ 作業場所</div>
+          <div class="sec-title">営業プロジェクトとプロジェクト指示</div>
+        </div>
+      </div>
+      <div class="sec-right"><span class="chev">▼</span></div>
+    </div>
+    <div class="sec-body">
+      <p class="lead">「営業プロジェクト」を1つ作り、その仕事の進め方を指示として登録します。</p>
+      <div class="paste">
+        <div class="paste-head">
+          <span class="paste-lbl">📋 そのまま貼れる｜プロジェクト指示（営業）</span>
+          <button class="cp-btn" onclick="cpPre(this)">コピー</button>
+        </div>
+        <div class="paste-text">このプロジェクトは、私の営業活動を支援するための作業場所です。商談準備、顧客課題の整理、提案の下書き、営業メール、お礼メール、次アクションの整理、週次報告を手伝ってください。
+
+提案を作るときは、必ず次の順で整理してください。①顧客の状況 ②想定課題 ③提供できる価値 ④提案内容 ⑤顧客メリット ⑥想定反論 ⑦次アクション。
+
+価格・契約条件・納期・値引きは断定せず、必要なら「社内確認が必要」と明記してください。資料にないことを事実として推測・断定しないでください。
+
+顧客に送る文面は押し売り感を避け、相手に配慮した自然な表現にしてください。必要に応じて丁寧版・カジュアル版・短い版を出してください。送信は必ず私が最終確認します。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SALES STEP 3: 準備資料 -->
+  <div class="sec" id="sl3">
+    <div class="sec-head" onclick="tog(this)">
+      <div class="sec-head-l">
+        <div class="step-circle sc-teal">3</div>
+        <div class="sec-titles">
+          <div class="sec-lbl">営業 STEP 3 ｜ 知識</div>
+          <div class="sec-title">プロジェクトに入れておく資料</div>
+        </div>
+      </div>
+      <div class="sec-right"><span class="chev">▼</span></div>
+    </div>
+    <div class="sec-body">
+      <p class="lead">提案やメールの精度は、入れた資料で決まります。次を「最新版だけ・公開してよいものだけ」入れます。</p>
+      <table class="cmp-table">
+        <thead><tr><th style="width:30%">資料</th><th>注意点</th></tr></thead>
+        <tbody>
+          <tr><td><strong>商品・サービス資料</strong></td><td>最新版だけ。古い説明は外す</td></tr>
+          <tr><td><strong>価格表</strong></td><td class="ng">最終金額は必ず人間が確認。古い価格表を放置しない</td></tr>
+          <tr><td><strong>導入事例</strong></td><td>公開可能なものだけ。顧客名の扱いに注意</td></tr>
+          <tr><td><strong>よくある質問（FAQ）</strong></td><td>回答済みで社外に出せる内容に限る</td></tr>
+          <tr><td><strong>競合比較</strong></td><td>事実ベース。誇張・断定を避ける</td></tr>
+          <tr><td><strong>提案書テンプレート</strong></td><td>型として活用。中身は案件ごとに確認</td></tr>
+          <tr><td><strong>日報・週報テンプレート</strong></td><td>報告形式を揃えるために入れる</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SALES STEP 4: Memory -->
+  <div class="sec" id="sl4">
+    <div class="sec-head" onclick="tog(this)">
+      <div class="sec-head-l">
+        <div class="step-circle sc-teal">4</div>
+        <div class="sec-titles">
+          <div class="sec-lbl">営業 STEP 4 ｜ 記憶</div>
+          <div class="sec-title">Memory に文体・報告形式を覚えさせる</div>
+        </div>
+      </div>
+      <div class="sec-right"><span class="chev">▼</span></div>
+    </div>
+    <div class="sec-body">
+      <p class="lead">自分の営業スタイルを一度覚えさせると、毎回指示しなくても文体が揃います。</p>
+      <div class="paste">
+        <div class="paste-head">
+          <span class="paste-lbl">📋 そのまま使える｜文体を覚えさせる指示</span>
+          <button class="cp-btn" onclick="cpPre(this)">コピー</button>
+        </div>
+        <div class="paste-text">今後覚えておいてください。私は営業メールでは、丁寧だけど堅すぎない文体を好みます。押し売り感が出る表現は避けてください。</div>
+      </div>
+      <div class="cl cl-warn">
+        <div class="cl-title">⚠️ Memory に頼らないもの</div>
+        <p>価格・契約条件・個人情報・値引き・最新の案件状況は<strong>記憶ではなく元データ（資料・CRM）を見て</strong>判断させてください。Memory を営業台帳の代わりにしないこと。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SALES STEP 5: 依頼テンプレ -->
+  <div class="sec" id="sl5">
+    <div class="sec-head" onclick="tog(this)">
+      <div class="sec-head-l">
+        <div class="step-circle sc-teal">5</div>
+        <div class="sec-titles">
+          <div class="sec-lbl">営業 STEP 5 ｜ 実戦</div>
+          <div class="sec-title">そのまま使える依頼文テンプレート（5種）</div>
+        </div>
+      </div>
+      <div class="sec-right"><span class="chev">▼</span></div>
+    </div>
+    <div class="sec-body">
+      <p class="lead">日々の営業でよく使う5場面の依頼文です。顧客名・案件名を入れ替えて使ってください。</p>
+      <div class="paste">
+        <div class="paste-head">
+          <span class="paste-lbl">📋 ① 商談準備</span>
+          <button class="cp-btn" onclick="cpPre(this)">コピー</button>
+        </div>
+        <div class="paste-text">次の顧客との商談を準備したいです。プロジェクト内の資料をもとに、①顧客の想定状況 ②想定している課題 ③当社が提供できる価値 ④商談で聞くべき質問 ⑤想定される反論と返し方 ⑥次の一手、を整理してください。
+資料にないことは推測と明記し、価格や契約条件は断定しないでください。
+
+顧客名：（　）／業種：（　）／今回の目的：（　）</div>
+      </div>
+      <div class="paste">
+        <div class="paste-head">
+          <span class="paste-lbl">📋 ② 初回営業メール</span>
+          <button class="cp-btn" onclick="cpPre(this)">コピー</button>
+        </div>
+        <div class="paste-text">次の相手に送る初回の営業メールの下書きを作ってください。押し売り感を避け、相手の状況に配慮した自然な文面で、丁寧版・短い版の2案を出してください。
+価格や契約条件は書かず、まずは話を聞かせてほしいという温度感にしてください。送信は私が確認します。
+
+相手：（　）／きっかけ・接点：（　）／伝えたいこと：（　）</div>
+      </div>
+      <div class="paste">
+        <div class="paste-head">
+          <span class="paste-lbl">📋 ③ 商談後フォロー</span>
+          <button class="cp-btn" onclick="cpPre(this)">コピー</button>
+        </div>
+        <div class="paste-text">先ほどの商談メモをもとに、お礼とフォローのメール下書きを作ってください。商談で出た相手の関心・宿題・次回までにこちらが用意するものを整理し、次のアクションが明確になる文面にしてください。丁寧版とカジュアル版の2案でお願いします。
+約束していない価格・納期は書かないでください。
+
+商談メモ：（貼り付け）</div>
+      </div>
+      <div class="paste">
+        <div class="paste-head">
+          <span class="paste-lbl">📋 ④ 提案書の下書き</span>
+          <button class="cp-btn" onclick="cpPre(this)">コピー</button>
+        </div>
+        <div class="paste-text">次の案件の提案書の下書きを作ってください。構成は ①顧客の状況 ②課題 ③提供できる価値 ④提案内容 ⑤顧客メリット ⑥想定反論への備え ⑦次アクション、の順でお願いします。
+価格・契約条件・納期は「社内確認が必要」と明記し、確定値は入れないでください。提案テンプレートがあればそれに沿ってください。
+
+顧客名：（　）／提案したいこと：（　）／予算感（分かれば）：（　）</div>
+      </div>
+      <div class="paste">
+        <div class="paste-head">
+          <span class="paste-lbl">📋 ⑤ 週次報告</span>
+          <button class="cp-btn" onclick="cpPre(this)">コピー</button>
+        </div>
+        <div class="paste-text">今週の営業活動を週報にまとめてください。①主な活動 ②進んだ案件と次アクション ③止まっている案件と理由 ④来週の優先対応 ⑤上長に相談したい点、の順で1ページにしてください。
+数字や案件状況は私が共有した内容の範囲でまとめ、不明な点は「要確認」と書いてください。
+
+今週の活動メモ：（貼り付け）</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SALES STEP 6: 仕上げ -->
+  <div class="sec" id="sl6">
+    <div class="sec-head" onclick="tog(this)">
+      <div class="sec-head-l">
+        <div class="step-circle sc-teal">✓</div>
+        <div class="sec-titles">
+          <div class="sec-lbl">営業 ｜ 仕上げ</div>
+          <div class="sec-title">30分セットアップ＆やってはいけないこと</div>
+        </div>
+      </div>
+      <div class="sec-right"><span class="chev">▼</span></div>
+    </div>
+    <div class="sec-body">
+      <h4 class="blk">30分でできる初期設定</h4>
+      <ul class="check-list">
+        <li><strong>5分</strong>：グローバル指示に営業版テンプレを貼る</li>
+        <li><strong>5分</strong>：「営業プロジェクト」を1つ作る</li>
+        <li><strong>5分</strong>：プロジェクト指示（営業）を貼る</li>
+        <li><strong>10分</strong>：商品資料・価格表・事例・FAQ・提案テンプレを入れる（最新版・公開可のみ）</li>
+        <li><strong>5分</strong>：最初の依頼（商談準備か週報）を1つ試す</li>
+      </ul>
+
+      <h4 class="blk">営業でやってはいけないこと</h4>
+      <div class="pc">
+        <div class="pc-box bad">
+          <div class="pc-label">🚫 任せない・させない</div>
+          <div class="pc-text"><ul><li>値引き・契約条件を Claude に判断させる</li><li>古い価格表を入れたまま提案させる</li><li>顧客の個人情報を必要以上に入れる</li><li>下書きを無確認のまま顧客へ送信する</li><li>Memory を正式な営業台帳として運用する</li></ul></div>
+        </div>
+        <div class="pc-box good">
+          <div class="pc-label">✅ 安全に効かせる</div>
+          <div class="pc-text"><ul><li>送信前に必ず自分が文面を確認する</li><li>価格・契約・納期は「社内確認が必要」と書かせる</li><li>資料は最新版・公開可のものだけにする</li><li>複数案を出させて自分で選ぶ</li><li>確定情報は資料・CRMの元データで照合する</li></ul></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </div><!-- /TRACK sales -->
+
+  <!-- REFERENCES -->
+  <div class="fn">
+    <h3>📚 出典（Anthropic 公式ヘルプ）</h3>
+    <ol>
+      <li><a href="https://support.claude.com/en/articles/13345190-get-started-with-claude-cowork" target="_blank" rel="noopener">Get started with Claude Cowork</a></li>
+      <li><a href="https://support.claude.com/en/articles/13364135-use-claude-cowork-safely" target="_blank" rel="noopener">Use Claude Cowork safely</a></li>
+      <li><a href="https://support.claude.com/en/articles/14116274-organize-your-tasks-with-projects-in-cowork" target="_blank" rel="noopener">Organize your tasks with projects in Cowork</a></li>
+      <li><a href="https://support.claude.com/en/articles/13837440-use-plugins-in-cowork" target="_blank" rel="noopener">Use plugins in Cowork</a></li>
+      <li><a href="https://www.anthropic.com/news/claude-for-small-business" target="_blank" rel="noopener">Introducing Claude for Small Business</a></li>
+      <li><a href="https://support.claude.com/en/articles/13854387-schedule-recurring-tasks-in-claude-cowork" target="_blank" rel="noopener">Schedule recurring tasks in Claude Cowork</a></li>
+      <li><a href="https://support.claude.com/en/articles/11473099-using-search-memory-on-claude" target="_blank" rel="noopener">Using chat search and memory on Claude</a></li>
+      <li><a href="https://github.com/anthropics/knowledge-work-plugins" target="_blank" rel="noopener">anthropics/knowledge-work-plugins（Small Business プラグイン）</a></li>
+    </ol>
+  </div>
+
+  <p class="disc">本ガイドは公開情報をもとにした安全導入の手引きです。UI のラベルや機能はアップデートで変わることがあります。実際の画面表示と最新の公式ヘルプをあわせてご確認ください。</p>
+
+</main>
+
+<script>
+  function tog(head) { head.parentElement.classList.toggle('open'); }
+  function openSec(id) { document.getElementById(id)?.classList.add('open'); }
+
+  function setTrack(name) {
+    document.querySelectorAll('.track').forEach(el => el.classList.toggle('active', el.dataset.track === name));
+    document.querySelectorAll('.nav-track').forEach(el => el.classList.toggle('active', el.dataset.track === name));
+    document.querySelectorAll('.track-tab').forEach(el => el.classList.toggle('active', el.dataset.track === name));
+    if (name === 'sales') document.getElementById('sl1')?.classList.add('open');
+    try { localStorage.setItem('cw-track', name); } catch (e) {}
+  }
+  (function () {
+    let initial = 'exec';
+    try { initial = localStorage.getItem('cw-track') || 'exec'; } catch (e) {}
+    if (location.hash === '#srole' || location.hash.startsWith('#sl')) initial = 'sales';
+    document.addEventListener('DOMContentLoaded', () => setTrack(initial));
+    window.addEventListener('hashchange', () => {
+      const h = location.hash;
+      if (h === '#srole' || h.startsWith('#sl')) setTrack('sales');
+      else if (/^#s(\d|10)$/.test(h)) setTrack('exec');
+    });
+  })();
+
+  function toggleTheme() {
+    const root = document.documentElement;
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    document.getElementById('themeBtn').textContent = next === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('cw-theme', next);
+  }
+  (function(){
+    const saved = localStorage.getItem('cw-theme') || 'light';
+    document.documentElement.dataset.theme = saved;
+    document.addEventListener('DOMContentLoaded', () => {
+      const btn = document.getElementById('themeBtn');
+      if (btn) btn.textContent = saved === 'dark' ? '☀️' : '🌙';
+    });
+  })();
+
+  function cpPre(btn) {
+    const box = btn.closest('.paste');
+    const text = (box?.querySelector('.paste-text')?.textContent || '').trim();
+    navigator.clipboard.writeText(text).then(() => {
+      const orig = btn.textContent;
+      btn.textContent = 'コピー済み ✓';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+</script>
+
+</body>
+</html>
